@@ -30,26 +30,24 @@ class Response {
 }
 
 interface  Filter {
-    boolean doFilter(Request request, Response response, FilterChain chain);
+    void doFilter(Request request, Response response, FilterChain chain);
 }
 
 class HtmlFilter implements Filter {
     @Override
-    public boolean doFilter(Request request, Response response, FilterChain chain) {
+    public void doFilter(Request request, Response response, FilterChain chain) {
         request.str = request.str.replaceAll("<", "[").replaceAll(">", "]") + " HTMLFILTER";
         chain.doFilter(request, response, chain);
         response.str += "--HTMLFILTER";
-        return true;
     }
 }
 
 class SensitiveFilter implements Filter {
     @Override
-    public boolean doFilter(Request request, Response response, FilterChain chain) {
+    public void doFilter(Request request, Response response, FilterChain chain) {
         request.str = request.str.replaceAll("996", "995") + " SENSITIVEFILTER";
         chain.doFilter(request, response, chain);
         response.str += "--SensitiveFilter";
-        return true;
     }
 }
 
@@ -63,10 +61,16 @@ class FilterChain implements Filter {
     }
 
     @Override
-    public boolean doFilter(Request request, Response response, FilterChain chain) {
-        if (index == list.size()) return false;
+    public void doFilter(Request request, Response response, FilterChain chain) {
+        if (index == list.size()) return;
         Filter f = list.get(index);
         index++;
-        return f.doFilter(request, response, this);
+        f.doFilter(request, response, this);
+
+//下面写法错误
+//        for (int i = 0; i < list.size(); i++) {
+//            Filter f = list.get(i);
+//            f.doFilter(request, response, this);
+//        }
     }
 }
