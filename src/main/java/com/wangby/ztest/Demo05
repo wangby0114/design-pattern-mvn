@@ -1,0 +1,32 @@
+package com.wangby.ztest;
+
+import java.util.*;
+
+public class Dmeo05 {
+
+    public static void main(String[] args) {
+        List<String> lists = new ArrayList<String>();
+        lists.add("a");
+        lists.add("b");
+        lists.add("c");
+        lists.add("d");
+        lists.add("e");
+
+        Iterator<String> i = lists.iterator();
+        while (i.hasNext()) {
+            String str = i.next();
+            System.out.println(str);
+            if (str.equals("c")) {
+                i.remove();
+            }
+        }
+        System.out.println("------------");
+        System.out.println(lists);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("a", "1");
+        map.put("b", "2");
+        map.put("c", "3");
+        map.put("d", "4");
+    }
+}
